@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record model="ir.ui.view" id="pv_tree_view">
+            <field name="name">efantatra.pv.list</field>
+            <field name="model">efantatra.dossier</field>
+            <field name="arch" type="xml">
+                <tree default_order="create_date desc" limit = "15" class="text-center">
+                    <field name="num_PV" string="N° PV" decoration-bf ="1"/>
+                    <field name="create_date" string="Date de dépot" widget="date" options="{'format': 'DD/MM/YYYY'}"/>
+                    <field name="parcelle" string = "N° parcelle" decoration-bf ="1"/>
+                    <field name="t_num" string = "N° Titre" decoration-bf ="1"/>
+                    <field name="usage" string="Nom deposant"/>
+                    <field name="visa" string="Visa" widget="badge" decoration-info="visa == 'non_visé'" decoration-success="visa == 'visé'"/>
+                    <field name="montant_paiement" string="Montant(Ar)" widget="monetary"/>
+                    <field name="status" string="etat" widget="boolean_toggle" readonly="1"/>
+                    <field name="responsable_id" groups="efantatra.group_efantatra_admin"/>
+                    <field name="observation_pv" string="Observation"/>
+                </tree>
+            </field>   
+        </record>
+
+        <!-- Form view -->
+        <record model="ir.ui.view" id="pv_form_view">
+            <field name="name">efantatra.pv.form.view</field>
+            <field name="model">efantatra.dossier</field>
+            <field name="arch" type="xml">
+                <form create="0" delete="0" duplicate="0">    
+                    <header attrs="{'invisible': [('id', '=', False)]}">
+                        <button name="%(send_email_form_view_action)d" 
+                            type="action" string="Envoyer un email" 
+                            class="btn btn-primary" style="padding:5px;" icon="fa-envelope" 
+                            context="{'default_sender_email_adress': 'domaineavaradrano@gmail.com','default_sending_id': usage}"  
+                        />
+                        <button name="%(send_sms_form_view_action)d" 
+                            type="action" string="Envoyer un SMS" 
+                            class="btn btn-primary" style="padding:5px; margin-left:5px;" icon="fa-comment" 
+                            context="{'default_usager_id': usage}"
+                        />
+                        <button name="print_PV" type="object" string="Imprimer PV" class="btn btn-secondary" icon="fa-print" style="padding:5px; margin-left:5px;" confirm="Voulez-vous imprimer une page de couverture pour ce PV?"/>                    
+                    </header>    
+  
+                    <sheet>
+                        <div attrs="{'invisible': [('id', '=', False)]}">
+                            <widget name="web_ribbon" text="EN COURS" 
+                                bg_color = "bg-info" 
+                                attrs="{'invisible': [('visa', '!=', 'non_visé')]}"
+                                tooltip="Ce PV n'est pas encore visé"
+                            />
+                            <widget name="web_ribbon" text="VISE" 
+                                bg_color = "bg-success"
+                                attrs="{'invisible': [('visa', '!=', 'visé')]}"
+                                tooltip="Ce PV a été visé"
+                            />                            
+                        </div>
+                        <div>
+                            <field name="qrcode_PV" attrs="{'invisible': [('id', '=', False)]}" nolabel = "1" widget="image" width="50" height="50"/>
+                            <field name="num_PV" readonly= "1" class= "title-lead mb-4 ml-4"/>
+                            <div class="chip chip-md inprogress-color z-depth-2 mr-0" attrs="{'invisible': ['|',('id', '=', False),('status', '=', True)]}">
+                                <i class="fa fa-times-circle"></i>En cours
+                            </div>
+                            <div class="chip chip-md finished-color z-depth-2 mr-0" attrs="{'invisible': ['|',('id', '=', False),('status', '=', False)]}">
+                                <i class="fa fa-check-circle"></i>Terminé
+                            </div>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="id" invisible="1"/>
+                                <field name="status" invisible="1"/>
+                                <field name="bureau_traitement" invisible="1"/>
+                                <field name="usage" string="Nom deposant:" class="mb-4" options="{'no_open': True, 'no_create' : True},'no_create_edit' : True}"/>
+                                <field name="montant_paiement" string="Montant(Ar):" widget="integer" attrs="{'invisible': ['|',('id', '=', False),('visa','!=', 'visé')]}" class="mb-4"/>
+                                <field name="visa" string="Visa:" attrs="{'invisible': [('id', '=', False)]}" class="mb-4" groups="efantatra.group_efantatra_admin"/>
+                                <field name="observation_pv" string="Observation:" attrs="{'invisible': [('id', '=', False)]}" class="mb-4" placeholder="Observation du PV..."/>
+                                <field name="indice_Dossier" string="Numero Dossier:" attrs="{'invisible': ['|',('id', '=', False),('status', '=', False)]}" class="mb-4" placeholder="ex. 1270"/>
+                                <field name="responsable_id" string="Responsable:" attrs="{'invisible': ['|',('id', '=', False),('status', '=', False)]}" class="mb-4" options="{'no_open': True, 'no_create' : True},'no_create_edit' : True}"/>
+                                <field name="dispatcheur" string="Dispatcheur:" invisible="1"/>
+                                <field name="date_Dispatch" string="Date dispatch:" invisible="1"/>
+                                <field name="usage_name" string="Usage Name:" invisible="1"/>   
+                            </group>
+                            <group attrs="{'invisible': [('id', '!=', False)]}">
+                                <field name="type_dos" string="Type de dossier:" class="mb-4"/>
+                                <!-- Dossier : Titre -->
+                                <field name="indice_titre" string = "N° Titre:" attrs="{'invisible':['|',('type_dos','=','_type2'),('type_dos','=',False)]}" class="mb-4" placeholder="ex. 170"/>
+                                <field name="ppt" string = "Proprété dite: " class="mb-4" attrs="{'invisible':['|',('type_dos','=','_type2'),('type_dos','=',False)]}"/>
+                                <field name="duplicata" string = "Duplicata:" class="mb-4" attrs="{'invisible':['|',('type_dos','=','_type2'),('type_dos','=',False)]}"/>
+                                
+                                <!-- Dossier : Cadastre -->
+                                <field name="parcelle" string = "N° parcelle:" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}" class="mb-4"/>
+                                <field name="section" string = "Section:" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}" class="mb-4"/>
+                                <field name="folio" string = "Folio:" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}" class="mb-4"/>
+                                <field name="registre" string = "Registre:" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}" class="mb-4"/>
+                                <field name="commune" string = "Commune:" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}" class="mb-4"/>
+                                <field name="extrait_matriciel" string = "Extrait matriciel:" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}" class="mb-4"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+                
+            </field>
+        </record>
+        
+        <!-- search filter -->
+        <record id="pv_view_search" model="ir.ui.view">
+            <field name="name">efantatra.pv.search</field>
+            <field name="model">efantatra.dossier</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="num_PV" string="N° PV"/>
+                    <field name="t_num" string="Numéro Titre"/>
+                    <field name="parcelle" string="Numéro Parcelle"/>
+                    <field name="usage" string="Usager"/>
+                    
+                    <filter string="En cours de traitement" name="status" domain="[('status','=', False)]"/>
+                    <filter string="Terminé" name="status" domain="[('status','=', True)]"/>
+                    
+                    <group expand="1" string="Group By">
+                        <filter string="Visa" name="group_by_visa" context="{'group_by':'visa'}"/>
+                        <filter string="Date de dépot" name="group_create_date" context="{'group_by':'create_date'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="pv_view_action">
+            <field name="name">Liste des Prévisa</field>
+            <field name="res_model">efantatra.dossier</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="pv_view_search"/>
+            <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('pv_tree_view')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('pv_form_view')})]"
+            />
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Deposer un nouveau PV à traiter
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

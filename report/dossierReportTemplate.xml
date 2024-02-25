@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="dossier_report">
+        <t t-call="web.html_container">
+            <div class="page">
+                <t t-foreach="docs" t-as="dossier">
+                    <div class="header" id="qrcode_DOS" style="position:absolute;top:1px;left:1px;">
+                        <img t-if="dossier.qrcode_DOS" t-att-src="image_data_uri(dossier.qrcode_DOS)" style="vertical-align:middle;max-height:70pt;max-width:90%" alt="Dos QR Code"/>
+                        <span style="font-family:sans-serif;font-size:1.5rem;font-weight:600;"><t t-esc="dossier.num_Dossier"/></span>
+                    </div>
+                    <t t-call="web.internal_layout">
+                        <div class="banner" style="text-align:center">
+                            <div class="banner-img" style="width:300px;height:90px;margin:0 32%;">
+                                <img src="/efantatra/static/src/img/logo_gris.png" alt="Republique de Madagascar" style="width:100%;height:100%;" />
+                            </div>
+                            <br/>
+                            <div class="title-lead" style="text-transform:uppercase;font-size:1.125em;">
+                                <h1>Circonscription Domaniale d'Antananarivo Avaradrano</h1> 
+                            </div>
+                        </div>
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <div class="body" style="text-align:center">
+                            <h1 style="text-transform:Uppercase;font-size:4em;">DOS</h1>
+                            <br/>
+                            <div class="titre_section" t-if="dossier.type_dos == '_type1'">
+                                <p style="font-family:'Lato', sans-serif;"><span style="font-size:1.2em;">TITRE N°</span> <span style="font-weight:600;font-size:1.3em;"><i><t t-esc="dossier.t_num"/></i></span></p>
+                                <br/>
+                                <p style="font-family:'Lato', sans-serif;"><span style="font-size:1.2em;">Propri<![CDATA[&eacute;]]>t<![CDATA[&eacute;]]> dite</span> <span style="font-weight:600;font-size:1.3em;"><i><t t-esc="dossier.ppt"/></i></span></p>
+                            </div>
+                            <div class="cadastre_section" t-if="dossier.type_dos == '_type2'">
+                                <p><span style="font-family:'Lato', sans-serif;font-size:1.5em;font-weight:600">CADASTRE </span><span style="dispaly:inline-block;font-size:1.3em;">delivré à</span> <span style="font-weight:600;font-size:1.3em;"><i><t t-esc="dossier.commune"/></i></span></p>
+                                <br/>
+                                <div class="cadastre_section_content" style="width:40%;margin:0 30%;">
+                                    <div class="first-section" style="float:left; text-align;text-align:start;">
+                                        <p style="font-family:'Lato',sans-serif;"><span style="font-size:1.2em;">Parcelle: </span><span style="font-weight:600;font-size:1.3em;"><i><t t-esc="dossier.parcelle"/></i></span></p>
+                                        <p style="font-family:'Lato',sans-serif;"><span style="font-size:1.2em;">Section: </span><span style="font-weight:600;font-size:1.3em;"><i><t t-esc="dossier.section"/></i></span></p>        
+                                    </div>
+                                    <div class="second-section" style="float:right;text-align:start;">
+                                        <p style="font-family:'Lato', sans-serif;"><span style="font-size:1.2em;">Registe: </span><span style="font-weight:600;font-size:1.3em;"><i><t t-esc="dossier.registre"/></i></span></p>
+                                        <p style="font-family:'Lato', sans-serif;"><span style="font-size:1.2em;">Folio: </span><span style="font-weight:600;font-size:1.3em;"><i><t t-esc="dossier.folio"/></i></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <div class="footer" id="qrcode_PV">
+                        <img t-if="dossier.qrcode_PV" t-att-src="image_data_uri(dossier.qrcode_PV)" style="vertical-align:middle;max-height:70pt;max-width:90%" alt="PV QR Code"/>
+                        <span style="font-family:sans-serif;font-size:1.5rem;font-weight:600;"><t t-esc="dossier.num_PV"/></span>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

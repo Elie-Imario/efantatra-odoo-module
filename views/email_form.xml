@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Email Form -->
+        <record id="send_email_form" model="ir.ui.view">
+            <field name="name">efantatra.pv.email.form</field>
+            <field name="model">efantatra.dossier</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <form create="0">
+                    <field name="usage" string="De" context="{'usage': usage}"/>
+                    <field name="observation_pv" string="Object"/>
+                </form>
+            </field>
+        </record>    
+        
+        
+        <!-- actions opening email popup form -->
+        <record model="ir.actions.act_window" id="send_email_form_view_action">
+            <field name="name">Envoyer un email</field>
+            <field name="res_model">efantatra.dossier</field>
+            <field name="view_mode">form</field>
+            <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('efantatra.send_email_form')})]"
+            />
+        </record>
+        
+    </data>
+</odoo>

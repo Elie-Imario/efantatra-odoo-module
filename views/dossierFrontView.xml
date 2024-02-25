@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record model="ir.ui.view" id="dos_tree_view">
+            <field name="name">efantatra.dossier.list</field>
+            <field name="model">efantatra.dossier</field>
+            <field name="arch" type="xml">
+                <tree default_order="create_date desc" create="0" limit="15" class="text-center">
+                    <field name="num_Dossier" string="N° Dossier" decoration-bf ="1"/>
+                    <field name="create_date" string="Date de depot" widget="date"/>
+                    <field name="usage" string="Nom deposant"/>
+                    <field name="date_final" string="Date final"/>
+                    <field name="date_Dispatch" string="Date de Dispatch" widget="date"/>
+                    <field name="dispatcheur" string="Dispatcheur"/>
+                    <field name="signe" string="Signature" widget="badge" decoration-info="signe == 'non_signé'" decoration-success="signe == 'signé'"/>
+                    <field name="responsable_id" groups="efantatra.group_efantatra_admin"/>
+                    <field name="observation_dos" string="Observation"/>
+                </tree>
+            </field>   
+        </record>
+        
+        <record model="ir.ui.view" id="dos_form_view">
+            <field name="name">efantatra.dossier.form.view</field>
+            <field name="model">efantatra.dossier</field>
+            <field name="arch" type="xml">
+                <form create="0" delete="0" duplicate="0"> 
+                    <header>
+                        <button name="%(send_email_form_view_action)d" 
+                            type="action" string="Envoyer un email" 
+                            class="btn btn-primary" style="padding:5px;" icon="fa-envelope" 
+                            context="{'default_sender_email_adress': 'domaineavaradrano@gmail.com','default_sending_id': usage}"
+                        />
+                        <button name="%(send_sms_form_view_action)d" 
+                            type="action" string="Envoyer un SMS" 
+                            class="btn btn-primary" style="padding:5px; margin-left:5px;" icon="fa-comment" 
+                            context="{'default_usager_id': usage}"
+                        />
+                        <button name="print_Dossier" type="object" string="Imprimer Dossier" class="btn btn-secondary" icon="fa-print" style="padding:5px; margin-left:5px;" confirm="Voulez-vous imprimer une page de couverture pour ce Dossier?"/>
+                    </header>    
+                    <sheet>
+                        <widget name="web_ribbon" text="NON SIGNE" 
+                            bg_color = "bg-info" 
+                            attrs="{'invisible': [('signe', '=', 'signé')]}"
+                            tooltip="Ce dossier n'est pas encore signé par le Chef"
+                        />
+                        <widget name="web_ribbon" text="SIGNE" 
+                            bg_color = "bg-success"
+                            attrs="{'invisible': [('signe', '=', 'non_signé')]}"
+                            tooltip="Ce PV a été signé par le Chef"
+                        />                            
+                        <div>
+                            <field name="qrcode_DOS" attrs="{'invisible': [('id', '=', False)]}" nolabel = "1" widget="image" width="50" height="50"/>
+                            <field name="num_Dossier" readonly= "1" class= "title-lead mb-4 ml-4"/>
+                            <!-- <div class="chip chip-md inprogress-color z-depth-2 mr-0" attrs="{'invisible': ['|',('id', '=', False),('status', '=', True)]}">
+                                <i class="fa fa-times-circle"></i>En cours
+                            </div>
+                            <div class="chip chip-md finished-color z-depth-2 mr-0" attrs="{'invisible': ['|',('id', '=', False),('status', '=', False)]}">
+                                <i class="fa fa-check-circle"></i>Terminé
+                            </div>-->
+                        </div> 
+                        <group>
+                            <group>
+                                <field name="id" invisible="1"/>
+                                <field name="status" invisible="1"/>
+                                <field name="usage" string="Nom deposant:" class="mb-4" readonly = "1" options="{'no_open': True}"/>
+                                <field name="signe" string="Signature:" attrs="{'invisible': [('id', '=', False)]}" class="mb-4" groups="efantatra.group_efantatra_admin"/>
+                                <field name="observation_dos" string="Observation:" attrs="{'invisible': [('id', '=', False)]}" class="mb-4" placeholder="Observation du dossier..."/>
+                                <field name="date_final" string="Date final:" invisible="1"/>   
+                            </group>
+                            <group>
+                                <field name="type_dos" invisible="1"/>
+                                <div class="detail_dos_box">
+                                    <!-- Dossier : Titre  -->
+                                    <p attrs="{'invisible':[('type_dos','=','_type2')]}" class="mb-4">
+                                        <i class="fa fa-info-circle" role="img"/> Assigné au Titre Foncier <span class="detail_dos"><field name="t_num" nolabel="1" readonly="1" class="oe_inline"/></span>
+                                    </p>
+                                    
+                                    <!-- Dossier : Cadastre  -->
+                                    <p attrs="{'invisible':[('type_dos','=','_type1')]}" class="mb-4">
+                                        <i class="fa fa-info-circle" role="img"/> Cadastre delivré à <field name="commune" nolabel="1" readonly="1" class="detail_dos oe_inline"/> portant le numéro de Parcelle <field name="parcelle" nolabel="1" readonly="1" class="detail_dos oe_inline"/> à la matrice foncière de la section d'<field name="section" nolabel="1" readonly="1" class="detail_dos oe_inline"/> du registre <field name="registre" nolabel="1" readonly="1" class="detail_dos oe_inline"/> et du folio <field name="folio" nolabel="1" readonly="1" class="detail_dos oe_inline"/>
+                                    </p>
+                                </div>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- search filter -->
+        <record id="dos_view_search" model="ir.ui.view">
+            <field name="name">efantatra.dossier.search</field>
+            <field name="model">efantatra.dossier</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="num_Dossier" string="N° Dossier"/>
+                    <field name="dispatcheur" string="Dispatcheur"/>
+                    <field name="responsable_id" string="Responsable"/>
+                    <field name="usage" string="Usager"/>
+                    
+                    <filter string="En attente de signature" name="signe" domain="[('signe','=', 'non_signé')]"/>
+                    <filter string="Signé" name="signe" domain="[('signe','=', 'signé')]"/>
+
+                    <group expand="1" string="Group By">
+                        <filter string="Date de dépot" name="group_create_date" context="{'group_by':'create_date'}" />
+                        <separator/>
+                        <filter string="Date de dispatch" name="group_date_Dispatch" context="{'group_by':'date_Dispatch'}" />
+                        <separator/>
+                        <filter string="Date final" name="group_date_final" context="{'group_by':'date_final'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="dossier_view_action">
+            <field name="name">Liste des Dossiers</field>
+            <field name="res_model">efantatra.dossier</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('num_Dossier', '!=', False)]</field>
+            <field name="search_view_id" ref="dos_view_search"/>
+            <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('dos_tree_view')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('dos_form_view')})]"
+            />
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Déposer un nouveau dossier à traiter
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

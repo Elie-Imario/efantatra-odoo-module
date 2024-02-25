@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="efantatra_dos_stats_graph" model="ir.ui.view">
+            <field name="name">efantatra.dossier.statement.graph</field>
+            <field name="model">efantatra.dossier</field>
+            <field name="arch" type="xml">
+                <graph string="Statistique des Dossiers" sample="1" disable_linking="1">
+                    <field name="bureau_traitement" string="Bureau Traitement"/>        
+                    <field name="create_date" interval="month"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="stats_view_search" model="ir.ui.view">
+            <field name="name">efantatra.stats.search</field>
+            <field name="model">efantatra.dossier</field>
+            <field name="arch" type="xml">
+                <search>   
+                    <filter string="En cours de traitement" name="status" domain="[('status','=', False)]"/>
+                    <filter string="Terminé" name="status" domain="[('status','=', True)]"/>
+                    <separator/>    
+                    <filter string="Aujourd'hui" name="create_date" domain="[('create_date','&gt;=', (datetime.date.today()).strftime('%Y-%m-%d')),('create_date','&lt;=',(datetime.date.today()).strftime('%Y-%m-%d'))]" />
+                    <filter string="Ce mois" name="four_weeks" domain="[('create_date','&gt;=',(context_today() + relativedelta(weeks=-4, weekday=0)).strftime('%Y-%m-%d'))]"/>
+                    <filter string="Cette année" name="orders_12m" domain="[('create_date','&gt;=',(context_today() + relativedelta(months=-12, weekday=0)).strftime('%Y-%m-%d'))]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter string="Visa" name="group_by_visa" context="{'group_by':'visa'}"/>
+                        <filter string="Signature" name="group_by_signe" context="{'group_by':'signe'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="efantatra_graph_view_action">
+            <field name="name">Statistiques periodiques des Dossiers traités et à traiter</field>
+            <field name="res_model">efantatra.dossier</field>
+            <field name="view_mode">graph</field>
+            <field name="search_view_id" ref="stats_view_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Aucun action de traitement à récapituler
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

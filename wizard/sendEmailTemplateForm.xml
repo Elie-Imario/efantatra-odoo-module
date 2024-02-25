@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Email Form -->
+        <record id="send_email_form" model="ir.ui.view">
+            <field name="name">efantatra.email.wizard.form</field>
+            <field name="model">efantatra.email.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="sender_email_adress" string="De :" readonly="1"/>
+                        <field name="sending_email_adress" string="A :" readonly="1" attrs="{'invisible': [('sending_email_adress','=',False)]}"/>
+                        <field name="object" string="Objet :" placeholder="Objet du courriel"/>
+                        <field name="email_body" string="Corps du message :" placeholder="Contenu de l'e-mail"/>
+                    </group>
+                    <span class="mt-4" style="color:red" attrs="{'invisible': [('sending_email_adress','!=',False)]}"><i class="fa fa-exclamation-triangle"></i> L'usager en question ne possède pas d'adresse éléctronique.</span>
+                    <footer>
+                        <button name="action_sendEmail" string="Envoyer" class="oe_highlight"
+                            type="object" attrs="{'invisible': [('sending_email_adress','=',False)]}"/>
+                        <button special="cancel" string="Annuler" />
+                    </footer>
+                </form>
+            </field>
+        </record>    
+        
+        <!-- actions opening email popup form -->
+        <record model="ir.actions.act_window" id="send_email_form_view_action">
+            <field name="name">Envoyer un email</field>
+            <field name="res_model">efantatra.email.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+    </data>
+</odoo>

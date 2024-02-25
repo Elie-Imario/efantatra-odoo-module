@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="bureau_tree_view">
+            <field name="name">efantatra.bureau.list</field>
+            <field name="model">efantatra.bureau</field>
+            <field name="arch" type="xml">
+                <tree limit="15" class="text-center">
+                    <field name="id" string="N° Bureau" width="10" class="text-center"/>  
+                    <field name="libelle_bureau" string="Libelle Bureau"/>
+                    <field name="bureau_name" string="Nom du Bureau"/>  
+                    <field name="nbpersonnel" string="Nombre de Personnel" class="text-center"/>  
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="bureau_form_view">
+            <field name="name">efantatra.bureau.form</field>
+            <field name="model">efantatra.bureau</field>
+            <field name="arch" type="xml">
+                <form create="0" delete="0" duplicate="0">
+                    <sheet>
+                        <group>
+                            <field name="libelle_bureau" string="Libelle Bureau" placeholder="ex. BAVI"/>
+                            <field name="bureau_name" string="Nom du Bureau" placeholder="ex. nom du bureau au sein de la CDA"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>        
+        
+        <!-- search filter -->
+        <record id="bureau_view_search" model="ir.ui.view">
+            <field name="name">efantatra.bureau.search</field>
+            <field name="model">efantatra.bureau</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="libelle_bureau" string="Libelle"/>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="bureau_view_action" model="ir.actions.act_window">
+            <field name="name">Liste des Bureaux</field>
+            <field name="res_model">efantatra.bureau</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Ajouter un Bureau
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

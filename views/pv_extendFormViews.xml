@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="titre_form_view_extend">
+        <field name="name">efantatra.dossier.titre.form</field>
+        <field name="model">efantatra.dossier</field>
+        <field name="inherit_id" ref="pv_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Edit form -->
+            <xpath expr="//form//group[1]//group" position="after">
+                <group attrs="{'invisible':[('id','=', False)]}">         
+                    <field name="type_dos" readonly= "1" class= "subtitle-lead mb-4" nolabel = "1"/>
+                    <!-- Dossier : Titre -->
+                    <field name="indice_titre" string = "N° Titre:" class="mb-4" attrs="{'invisible':['|',('type_dos','=','_type2'),('type_dos','=',False)]}"/>
+                    <field name="ppt" string = "Proprété dite: " class="mb-4" attrs="{'invisible':['|',('type_dos','=','_type2'),('type_dos','=',False)]}"/>
+                    <field name="duplicata" string = "Duplicata:" class="mb-4" attrs="{'invisible':['|',('type_dos','=','_type2'),('type_dos','=',False)]}"/>
+                    
+                    <!-- Dossier : Cadastre -->
+                    <field name="parcelle" string = "N° Parcelle:" class="mb-4" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}"/>
+                    <field name="section" string = "Section:" class="mb-4" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}"/>
+                    <field name="folio" string = "Folio:" class="mb-4" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}"/>
+                    <field name="registre" string = "Registre:" class="mb-4" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}"/>
+                    <field name="commune" string = "Commune:" class="mb-4" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}"/>
+                    <field name="extrait_matriciel" string = "Extrait matriciel:" class="mb-4" attrs="{'invisible':['|',('type_dos','=','_type1'),('type_dos','=',False)]}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

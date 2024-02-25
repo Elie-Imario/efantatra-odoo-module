@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Top menu item -->
+    <menuitem name="eFantatra" id="e_fantatra_root_menu"/>
+    <!--  -->
+    <menuitem name="Dossiers" id="dossier_root_Menu" parent="e_fantatra_root_menu" sequence="1" groups="group_efantatra_admin"/>
+    
+    <!-- menu Agent -->
+    <menuitem name="Liste des PV" id="pv_list_root_Menu_agent" action="pv_view_action" parent="e_fantatra_root_menu" sequence="1" groups="group_efantatra_agent"/>
+    <menuitem name="Usagers" id="usage_list_root_Menu_agent" action="usage_view_action" parent="e_fantatra_root_menu" sequence="2" groups="group_efantatra_agent,group_efantatra_admin"/>
+    
+    <!-- menu Admin -->
+    <menuitem name="Bureau" id="bureau_root_Menu" action="bureau_view_action" parent="e_fantatra_root_menu" sequence="3" groups="group_efantatra_admin"/>
+    <menuitem name="Historique" id="historique_root_Menu" action="historique_view_action" parent="e_fantatra_root_menu" sequence="4" groups="group_efantatra_admin"/>
+
+    <!-- menu Responsable -->
+    <menuitem name="Liste des Dossiers" id="dossier_list_root_Menu_responsable" action="dossier_view_action" parent="e_fantatra_root_menu" sequence="1" groups="group_efantatra_responsable"/>
+
+    <!-- menu Chef -->
+    <menuitem name="Liste des PV" id="pv_nonvise_list_root_Menu_chef" action="pv_nonvise_view_action" parent="e_fantatra_root_menu" sequence="1" groups="group_efantatra_chef"/>
+    <menuitem name="Liste des Dossiers" id="dos_nonvise_list_root_Menu_chef" action="dossier_nonsigne_view_action" parent="e_fantatra_root_menu" sequence="2" groups="group_efantatra_chef"/>
+
+    <!-- submenu admin-->
+    <menuitem name="Liste des PV" id="pv_list_root_Menu" action="pv_view_action" parent="dossier_root_Menu" sequence="1" groups="group_efantatra_admin"/>
+    <menuitem name="Liste des Dossiers" id="dossier_list_root_Menu" action="dossier_view_action" parent="dossier_root_Menu" sequence="1" groups="group_efantatra_admin"/>
+    <menuitem name="Histogramme / Diagramme récaputulatif" id="graph_root_Menu" action="efantatra_graph_view_action" parent="dossier_root_Menu" sequence="1" groups="group_efantatra_admin"/>
+    
+</odoo>

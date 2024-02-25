@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="report_PV" model="ir.actions.report">
+            <field name="name">Couverture du PV</field>
+            <field name="model">efantatra.dossier</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">efantatra.PV_report</field>
+            <field name="report_file">efantatra.PV_report</field>
+            <field name="print_report_name">object.num_PV</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

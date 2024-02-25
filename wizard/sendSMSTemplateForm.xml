@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- sms Form -->
+        <record id="send_sms_form" model="ir.ui.view">
+            <field name="name">efantatra.sms.wizard.form</field>
+            <field name="model">efantatra.sms.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <p class="mb-4">
+                        Envoyer un SMS à <span class="detail_form"><field name="usager_name" nolabel="1" readonly="1"/></span>
+                    </p>
+                    <group>
+                        <field name="message" string="Corps du message :" placeholder="Contenu du message"/>
+                    </group>
+                    <footer>
+                        <button name="sendSMS" string="Envoyer" class="oe_highlight"
+                                type="object" />
+                        <button special="cancel" string="Annuler" />
+                    </footer>
+                </form>
+            </field>
+        </record>    
+        
+        <!-- actions opening sms popup form -->
+        <record model="ir.actions.act_window" id="send_sms_form_view_action">
+            <field name="name">Envoyer un SMS</field>
+            <field name="res_model">efantatra.sms.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+    </data>
+</odoo>

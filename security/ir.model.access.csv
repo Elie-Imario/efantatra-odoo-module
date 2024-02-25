@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_efantatra_usage,Base User,model_efantatra_usage,base.group_user,1,1,1,1
+access_efantatra_dossier_agent,Base User,model_efantatra_dossier,group_efantatra_agent,1,1,1,0
+access_efantatra_dossier_responsable,Base User,model_efantatra_dossier,group_efantatra_responsable,1,1,1,0
+access_efantatra_dossier_chef,Base User,model_efantatra_dossier,group_efantatra_chef,1,1,1,0
+access_efantatra_dossier,Base User,model_efantatra_dossier,group_efantatra_admin,1,1,1,1
+access_efantatra_bureau,Base User,model_efantatra_bureau,base.group_user,1,1,1,1
+access_efantatra_efantatra_email_wizard,Base User,model_efantatra_email_wizard,base.group_user,1,1,1,1
+access_efantatra_efantatra_sms_wizard,Base User,model_efantatra_sms_wizard,base.group_user,1,1,1,1
+access_efantatra_historique,Base User,model_efantatra_historique_traitement,group_efantatra_admin,1,0,1,1

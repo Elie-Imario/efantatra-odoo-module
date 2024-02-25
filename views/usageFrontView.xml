@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="efantatra_usage_form_view">
+            <field name="name">form.usage</field>
+            <field name="model">efantatra.usage</field>
+            <field name="arch" type="xml">
+                <form class="usagerFrontView-form-container">
+                    <sheet>
+                        <field name="avatar" class="oe_avatar avatar_usager" nolabel="1" widget="image"/>  
+                        <div class="oe_title usagerform-container">
+                            <div class="mb-3">
+                                <label for="name_usager" class="mb-2" string="Nom et Prénom :"/>
+                                <field name="name_usager" placeholder="ex. John Doe"/>    
+                            </div>
+                            <div class="mb-3">
+                                <label for="cin" string="N°CIN :" class="mb-2"/>
+                                <field name="cin"/>    
+                            </div>
+                            <div class="mb-3">
+                              <label for="name_usager" class="mb-2" string="Lieu de residence :"/>
+                                <field name="adresse" placeholder="By-Pass, Antananarivo 101"/>  
+                            </div>
+                            <div class="mb-3">
+                                <label for="name_usager" class="mb-2" string="Adresse email :"/>
+                                <field name="email_adress" placeholder="John_Doe@gmail.com"/>     
+                            </div>
+                            <div class="mb-3">
+                                <label for="name_usager" class="mb-2" string="Telephone :"/>
+                                <field name="phone_number" placeholder="0340015258"/> 
+                            </div>
+                        </div>
+                    </sheet>  
+                </form>
+            </field>   
+        </record>
+
+        <record model="ir.ui.view" id="efantatra_usage_kanban_view">
+            <field name="name">list.usage</field>
+            <field name="model">efantatra.usage</field>
+            <field name="arch" type="xml">
+                <kanban default_order="name_usager asc" class="o_usage_kanban row" sample="1">
+                    <field name="id"/>  
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="col-lg-3 col-md-4 col-sm-6 p-0 o_kanban_record_has_image_fill o_usage_kanban">
+                                <div class="profile-card card rounded-lg shadow p-4 p-xl-5 text-center position-relative overflow-hidden">
+                                    <div class="o_dropdown_kanban dropdown" t-if="widget.editable">
+                                        <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a role="menuitem" type="edit" class="dropdown-item">Modifier usager</a>
+                                            <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item" groups="efantatra.group_efantatra_admin">Supprimer usager</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="banner"></div>
+                                    <div class="avatar">
+                                        <img class="img-circle mx-auto mb-3" t-att-src="kanban_image('efantatra.usage', 'avatar', record.id.raw_value)"/>
+                                    </div>
+                                    <h2 class="mb-2"><field name="name_usager"/></h2>
+                                    <div class="card-details text-left">
+                                        <p class="mb-2"><i class="fa fa-envelope mr-3"></i><field name="email_adress"/></p>
+                                        <p class="mb-2"><i class="fa fa-phone mr-3"></i><field name="phone_number"/></p>
+                                        <p><i class="fa fa-map-marker mr-3"></i><field name="adresse"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- search filter -->
+        <record id="usager_view_search" model="ir.ui.view">
+            <field name="name">efantatra.usage.search</field>
+            <field name="model">efantatra.usage</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name_usager" string="Nom"/>
+                    <field name="phone_number" string="Telephone"/>
+                    <field name="cin" string="CIN"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="usage_view_action">
+            <field name="name">Liste des usagers</field>
+            <field name="res_model">efantatra.usage</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Ajouter un nouveau usagé
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>
